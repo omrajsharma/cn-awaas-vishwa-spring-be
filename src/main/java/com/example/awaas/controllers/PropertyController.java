@@ -40,7 +40,6 @@ public class PropertyController {
         }
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<?> editProperty(
             @PathVariable Long id,
@@ -58,16 +57,16 @@ public class PropertyController {
 
     @GetMapping
     public ResponseEntity<?> getAllProperties(
-            @RequestParam(required = false) String location,   // Optional location filter
-            @RequestParam(required = false) Double minPrice,   // Optional minimum price filter
-            @RequestParam(required = false) Double maxPrice,   // Optional maximum price filter
+            @RequestParam(required = false) String location, // Optional location filter
+            @RequestParam(required = false) Double minPrice, // Optional minimum price filter
+            @RequestParam(required = false) Double maxPrice, // Optional maximum price filter
             @RequestParam(required = false) PropertyTypeEnum type, // Optional property type filter
-            @RequestParam(defaultValue = "0") int page,        // Default page number
-            @RequestParam(defaultValue = "10") int size        // Default page size
+            @RequestParam(defaultValue = "0") int page, // Default page number
+            @RequestParam(defaultValue = "10") int size // Default page size
     ) {
         try {
-            Page<PropertyResponse> properties = propertyService.getAllProperties(location, minPrice, maxPrice, type, page, size);
-            return ResponseEntity.ok(properties);
+            return ResponseEntity.ok(propertyService.getAllProperties(location, minPrice, maxPrice, type, page, size));
+
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

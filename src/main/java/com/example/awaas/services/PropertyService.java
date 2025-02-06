@@ -7,6 +7,7 @@ import com.example.awaas.managers.PropertyManager;
 import com.example.awaas.managers.UserManager;
 import com.example.awaas.mappers.PropertyMapper;
 import com.example.awaas.requests.CreatePropertyRequest;
+import com.example.awaas.response.PropertyProjectionResponse;
 import com.example.awaas.response.PropertyResponse;
 import com.example.awaas.utilities.EmailUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,8 @@ public class PropertyService {
     // Path to save uploaded images locally (adjust as needed)
     private final String UPLOAD_DIR = "/Users/omrajsharma/Documents/coding-ninjas/cn-awaas-vishwa-spring-be/uploads/";
 
-    public PropertyResponse createProperty(CreatePropertyRequest request, MultipartFile image, String ownerEmail) throws IOException {
+    public PropertyResponse createProperty(CreatePropertyRequest request, MultipartFile image, String ownerEmail)
+            throws IOException {
         // Find owner by email
         UserDTO owner = userManager.getByEmail(ownerEmail);
         if (owner == null) {
@@ -72,7 +74,6 @@ public class PropertyService {
         return PropertyMapper.INSTANCE.toPropertyResponse(propertyManager.save(propertyDTO));
     }
 
-
     public PropertyResponse editProperty(Long propertyId, CreatePropertyRequest request, String ownerEmail) {
         // Find the property by ID
         PropertyDTO property = propertyManager.findById(propertyId);
@@ -98,7 +99,8 @@ public class PropertyService {
     }
 
     // Get all properties with pagination
-    public Page<PropertyResponse> getAllProperties(String location, Double minPrice, Double maxPrice, PropertyTypeEnum type, int page, int size) {
+    public Page<PropertyProjectionResponse> getAllProperties(String location, Double minPrice, Double maxPrice,
+            PropertyTypeEnum type, int page, int size) {
         return propertyManager.getAllProperties(location, minPrice, maxPrice, type, page, size);
     }
 
