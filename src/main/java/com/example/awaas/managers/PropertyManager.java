@@ -5,7 +5,9 @@ import com.example.awaas.dtos.UserDTO;
 import com.example.awaas.entities.Property;
 import com.example.awaas.enums.PropertyTypeEnum;
 import com.example.awaas.mappers.PropertyMapper;
+import com.example.awaas.projections.PropertyProjection;
 import com.example.awaas.repos.PropertyRepo;
+import com.example.awaas.response.PropertyProjectionResponse;
 import com.example.awaas.response.PropertyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,12 +40,14 @@ public class PropertyManager {
         return null;
     }
 
-    public Page<PropertyResponse> getAllProperties(String location, Double minPrice, Double maxPrice, PropertyTypeEnum type, int page, int size) {
+    public Page<PropertyProjectionResponse> getAllProperties(String location, Double minPrice, Double maxPrice,
+            PropertyTypeEnum type, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Property> propertyPage = propertyRepository.findAllWithFilters(location, minPrice, maxPrice, type, pageable);
+        Page<PropertyProjection> propertyPage = propertyRepository.findAllWithFilters(location, minPrice, maxPrice,
+                type, pageable);
 
-        // Map the Page<Property> to Page<PropertyResponse>
-        return PropertyMapper.INSTANCE.toPagePropertyResponse(propertyPage);
+        // Map the Page<PropertyProjection> to Page<PropertyProjectionResponse>
+        return PropertyMapper.INSTANCE.toPagePropertyProjectionResponse(propertyPage);
     }
 
     public List<PropertyDTO> getPropertiesByOwner(Long ownerId) {
